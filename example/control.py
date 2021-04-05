@@ -80,6 +80,16 @@ def get_crc_value(s, crc16):
     # print(s)
     return bytes.fromhex(s)
 
+def inverse_code(in_code):
+    '''计算16位反码'''
+    outcode = bin(in_code & 0xFFFF)
+    outcode = hex(int(outcode,2))[2:]
+    while(len(outcode)!=4):
+        outcode = '0' + outcode
+    return outcode
+
+# coordinate_write(0,100,-320,90,6,1)
+
 def serial_operation(write_data):
     '''串口写入并输出返回值'''
     ser = serial.Serial('/dev/ttyUSB0',9600,8,'E',1)
@@ -100,16 +110,6 @@ def serial_operation(write_data):
     if(count != 0):
         return ser.read(ser.in_waiting)
         # print(ser.read(ser.in_waiting))# 读出串口数据
-
-def inverse_code(in_code):
-    '''计算16位反码'''
-    outcode = bin(in_code & 0xFFFF)
-    outcode = hex(int(outcode,2))[2:]
-    while(len(outcode)!=4):
-        outcode = '0' + outcode
-    return outcode
-
-# coordinate_write(0,100,-320,90,6,1)
 
 P1 = (0, 100, -320, 90, 6, 1)
 P2 = (0, 100, -380, 90, 6, 1)
