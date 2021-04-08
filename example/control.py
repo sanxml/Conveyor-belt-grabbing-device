@@ -144,9 +144,9 @@ P6 = [0, -100, -320, 0, 6, 0]
 P7 = [0,    0, -320, 0, 6, 0]
 
 
-# coordinate_write(-120,-110.6,-321)
-coordinate_write_seven(P1,P2,P3,P4,P5,P6,P7)
-# coordinate_read()
+coordinate_write(0,0,-300)
+# coordinate_write_seven(P1,P2,P3,P4,P5,P6,P7)
+coordinate_read()
 
 
 def catch(target_point,place_point=[0,0,-300],sucker_speed=5):
