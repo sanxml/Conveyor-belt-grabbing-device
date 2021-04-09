@@ -1,12 +1,6 @@
+'''图像处理相关程序'''
 import cv2 as cv
 import numpy as np
-
-camera=cv.VideoCapture(2)
-ROI_rect = (150,0,640-150,480)
-contours_min_area = 2000
-
-lower_green = np.array([35, 45, 0])
-upper_green = np.array([100, 255, 255])
 
 def hsv_trackbar(img_hsv):
     '''通过调节滑动条，得到图片的hsv，输入需为hsv色彩空间的图片'''
@@ -39,11 +33,11 @@ def hsv_trackbar(img_hsv):
             break
     cv.destroyAllWindows()
 
-def find_contours(img, img_bin):
+def find_contours(img, img_bin, contours_min_area = 2000):
     '''
     查找面积大于某个值的所有轮廓，并在原图中画出每个轮廓的中点，返回为轮廓中点和面积的列表
 
-    输入：img-原图片， img_bin-原图经过处理后的二值化图片
+    输入：img-原图片， img_bin-原图经过处理后的二值化图片, contours_min_area-面积范围
 
     返回：contours_list=[cX_1,cY_1,area1,cX_2,cY_2,area2...]
 
@@ -67,46 +61,46 @@ def find_contours(img, img_bin):
 def color_recognition(img, point):
     pass
 
-def main():
-    while(True):
-        ret ,img = camera.read()
-        # img = cv.resize(img, (480,360))
-        ROI_img = img[ROI_rect[1]:ROI_rect[1]+ROI_rect[3],ROI_rect[0]:ROI_rect[2]]
-        cv.line(img,(145,0),(145,480),(0,255,255),thickness=2)  #画线
-        cv.line(img,(640-145,0),(640-145,480),(0,255,255),thickness=2)
+# def main():
+#     while(True):
+#         ret ,img = camera.read()
+#         # img = cv.resize(img, (480,360))
+#         ROI_img = img[ROI_rect[1]:ROI_rect[1]+ROI_rect[3],ROI_rect[0]:ROI_rect[2]]
+#         cv.line(img,(145,0),(145,480),(0,255,255),thickness=2)  #画线
+#         cv.line(img,(640-145,0),(640-145,480),(0,255,255),thickness=2)
 
-        hsv_img = cv.cvtColor(ROI_img, cv.COLOR_BGR2HSV) # 将图片转为灰度图
+#         hsv_img = cv.cvtColor(ROI_img, cv.COLOR_BGR2HSV) # 将图片转为灰度图
 
-        # gray_img = cv.cvtColor(ROI_img, cv.COLOR_BGR2GRAY) # 将图片转为灰度图
-        # ret, img_bin = cv.threshold(gray_img, 100, 255, cv.THRESH_BINARY) # 将灰度图转为二值化图片
+#         # gray_img = cv.cvtColor(ROI_img, cv.COLOR_BGR2GRAY) # 将图片转为灰度图
+#         # ret, img_bin = cv.threshold(gray_img, 100, 255, cv.THRESH_BINARY) # 将灰度图转为二值化图片
 
-        img_mask = cv.inRange(hsv_img, lower_green, upper_green) # 限定范围，转为二值化图片，这里只保留绿色分量
-        img_bin = cv.bitwise_not(img_mask) #将图片反转，这里只保留除绿色的其他分量
+#         img_mask = cv.inRange(hsv_img, lower_green, upper_green) # 限定范围，转为二值化图片，这里只保留绿色分量
+#         img_bin = cv.bitwise_not(img_mask) #将图片反转，这里只保留除绿色的其他分量
 
-        img_bin = cv.GaussianBlur(img_bin,(5,5),0) #高斯模糊
-        kernel = cv.getStructuringElement(cv.MORPH_RECT,(7, 7)) #设置形态学运算所需要的卷积核
-        img_bin = cv.erode(img_bin,kernel)          #腐蚀图像
-        img_bin = cv.dilate(img_bin,kernel)        #膨胀图像
+#         img_bin = cv.GaussianBlur(img_bin,(5,5),0) #高斯模糊
+#         kernel = cv.getStructuringElement(cv.MORPH_RECT,(7, 7)) #设置形态学运算所需要的卷积核
+#         img_bin = cv.erode(img_bin,kernel)          #腐蚀图像
+#         img_bin = cv.dilate(img_bin,kernel)        #膨胀图像
 
-        find_contours(ROI_img,img_bin)
-
-
-        # cv.imshow("img",img)
-        # cv.imshow("Guassian_img", Guassian_img)
-        # cv.imshow("hsv_img", hsv_img)
-        # cv.imshow("out_img", out_img)
-        # cv.imshow("mask", img_mask)
-        cv.imshow("img_bin", img_bin)
-        cv.imshow("camera", ROI_img)
+#         find_contours(ROI_img,img_bin)
 
 
-        if(cv.waitKey(1)==27):   #按下Esc键关闭窗口
-            break
-        elif(cv.waitKey(1)==ord('c')):
-            cv.imwrite("hsv_img"+'.png',hsv_img)
-    camera.release()
+#         # cv.imshow("img",img)
+#         # cv.imshow("Guassian_img", Guassian_img)
+#         # cv.imshow("hsv_img", hsv_img)
+#         # cv.imshow("out_img", out_img)
+#         # cv.imshow("mask", img_mask)
+#         cv.imshow("img_bin", img_bin)
+#         cv.imshow("camera", ROI_img)
 
-main()
+
+#         if(cv.waitKey(1)==27):   #按下Esc键关闭窗口
+#             break
+#         elif(cv.waitKey(1)==ord('c')):
+#             cv.imwrite("hsv_img"+'.png',hsv_img)
+#     camera.release()
+
+# main()
 
 # hsv_img = cv.imread('/run/media/sanxml/data/个人文件夹/浙海大/刘老师/刘老师项目/Conveyor-belt-grabbing-device/example/hsv_img.png')
 # cv.imshow("hsv_img", hsv_img)

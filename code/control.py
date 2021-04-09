@@ -128,25 +128,25 @@ def serial_operation(write_data):
     ser.flushInput()  # 清空缓冲区
     ser.write(write_data)
 
-    time.sleep(0.05) # 延时50ms
+    time.sleep(0.1) # 延时50ms
     count = ser.inWaiting() # 获取串口缓冲区数据
     if(count != 0):
         read_data = ser.read(ser.in_waiting)# 读出串口数据
         # print(read_data)
         return read_data
 
-P1 = [0, 100, -320, 90, 6, 1]
-P2 = [0, 100, -380, 90, 6, 1]
-P3 = [0, 100, -320, 90, 6, 1]
-P4 = [0, -100, -320, 0, 6, 1]
-P5 = [0, -100, -380, 0, 6, 1]
-P6 = [0, -100, -320, 0, 6, 0]
-P7 = [0,    0, -320, 0, 6, 0]
+# P1 = [0, 100, -320, 90, 6, 1]
+# P2 = [0, 100, -380, 90, 6, 1]
+# P3 = [0, 100, -320, 90, 6, 1]
+# P4 = [0, -100, -320, 0, 6, 1]
+# P5 = [0, -100, -380, 0, 6, 1]
+# P6 = [0, -100, -320, 0, 6, 0]
+# P7 = [0,    0, -320, 0, 6, 0]
 
 
-coordinate_write(0,0,-300)
+# coordinate_write(0,0,-300)
 # coordinate_write_seven(P1,P2,P3,P4,P5,P6,P7)
-coordinate_read()
+# coordinate_read()
 
 
 def catch(target_point,place_point=[0,0,-300],sucker_speed=5):
