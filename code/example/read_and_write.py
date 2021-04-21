@@ -5,17 +5,32 @@ import time
 ser = serial.Serial('/dev/ttyUSB1',9600,8,'E',1)
 ser.flushInput()  # 清空缓冲区
 
-flag = ser.is_open
+flag = ser.is_open  # 判断端口是否连接
 if(flag):
     print("success\n")
     # ser.close()
 else:
     print("Open Error\n")
 ser.flushInput()  # 清空缓冲区
+
+'''
+ 根据协议可知,这个为设置坐标（0，-100，-400，0,0）
+ 发送内容0110000800050A0000FC18F060000000000BD8
+ 返回内容01100008000581C8
+ 下位机地址（01），功能码（10），起始地址（08），寄存器个数（05），字节数（0A），X轴坐标（0），Y轴坐标（-100,其中FC18为-1000的补码），Z轴坐标（-400，其中F060为-4000的补码），A轴角度（0），速度级别值（0）（最高速）吸盘状态（0-释放），CR C校验码（0BD8）
+'''
 ser.write(b'\x01\x10\x00\x08\x00\x05\n\x00\x00\xfc\x18\xf0`\x00\x00\x00\x00\x0b\xd8')
+
+'''
+根据协议可知,读取当前坐标
+发送010300080005040B
+返回01030A0000FC18F06000000000275E
+下位机地址（01），功能码（03），起始地址（08），寄存器个数（05），CR C校验码（040B）下位机地址（01），功能码（03），字节数（0A），X轴坐标（0），Y轴坐标（-100, 其中FC18为-1000的补码），Z轴坐标（-400，其中F060为-4000的补码），旋转角度0，吸盘状态（0-释放），速度级别0，CR C校验码（275E）
+'''
 # ser.write(b'\x01\x03\x00\x08\x00\x05\x04\x0B')
-# ser.write(b'\x01\x10\x00\x08\x00\x05\x0A\x00\x00\xFC\x18\xF0\x60\x00\x00\x00\x00\x0B\xD8')
-time.sleep(0.05) # 延时50ms
-count = ser.inWaiting() # 获取串口缓冲区数据
+
+time.sleep(0.05) # 延时50ms,表明不再发送数据
+
+count = ser.inWaiting() # 获取串口缓冲区数据,即收到的数据
 if(count != 0):
     print(ser.read(ser.in_waiting))# 读出串口数据

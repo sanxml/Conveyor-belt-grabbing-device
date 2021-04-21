@@ -147,17 +147,3 @@ def serial_operation(write_data):
 # coordinate_write(0,0,-300)
 # coordinate_write_seven(P1,P2,P3,P4,P5,P6,P7)
 # coordinate_read()
-
-
-def catch(target_point,place_point=[0,0,-300],sucker_speed=5):
-    '''抓取物块并放置到指定区域'''
-    P1 = target_point + [0, sucker_speed, 0]
-    P2 = target_point + [0, sucker_speed, 1]
-    P3 = target_point + [0, sucker_speed, 1]
-    P4 = place_point  + [0, sucker_speed, 1]
-    P5 = place_point  + [0, sucker_speed, 0]
-    P6 = place_point  + [0, sucker_speed, 0]
-    P7 = [0, 0, -300, 0, 0, 0]
-    coordinate_write_seven(P1,P2,P3,P4,P5,P6,P7)
-
-# catch()
